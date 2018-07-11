@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scheme
+   version = "1.3">
+   <BuildAction>
+      <BuildActionEntries>
+         <BuildActionEntry
+            buildForRunning = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C228F5BB0BAF2BBF4AC8020A"
+               BuildableName = "TransitionsAnimation.app"
+               BlueprintName = "TransitionsAnimation"
+               ReferencedContainer = "container:TransitionsAnimation.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+      </BuildActionEntries>
+   </BuildAction>
+   <LaunchAction
+      useCustomWorkingDirectory = "NO"
+      buildConfiguration = "Debug"
+      allowLocationSimulation = "YES">
+      <BuildableProductRunnable>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "C228F5BB0BAF2BBF4AC8020A"
+            BuildableName = "TransitionsAnimation.app"
+            BlueprintName = "TransitionsAnimation"
+            ReferencedContainer = "container:TransitionsAnimation.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+   </LaunchAction>
+</Scheme>

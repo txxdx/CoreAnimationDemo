@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 
-@interface ViewController ()
+@interface ViewController () <CAAnimationDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *hourHand;
 @property (weak, nonatomic) IBOutlet UIImageView *minuteHand;
 @property (weak, nonatomic) IBOutlet UIImageView *secondHand;
@@ -26,10 +26,15 @@
 	self.minuteHand.layer.anchorPoint = CGPointMake(0.5, 0.9);
 	self.hourHand.layer.anchorPoint = CGPointMake(0.5, 0.9);
 	
-	[self tick];
+	//[self tick];
+	[self updateHandsAnimated:NO];
 }
 
 - (void)tick {
+	[self updateHandsAnimated:YES];
+}
+
+- (void)updateHandsAnimated:(BOOL)animated {
 	
 	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
 	NSUInteger units = NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
@@ -39,15 +44,29 @@
 	CGFloat minutesAngle = (components.minute / 60.0) * M_PI * 2;
 	CGFloat secondsAngle = (components.second / 60.0) * M_PI * 2;
 	
-	self.hourHand.transform = CGAffineTransformMakeRotation(hoursAngle);
-	self.minuteHand.transform = CGAffineTransformMakeRotation(minutesAngle);
-	self.secondHand.transform = CGAffineTransformMakeRotation(secondsAngle);
+	[self setAngle:hoursAngle forHand:self.hourHand animated: animated];
+	[self setAngle:minutesAngle forHand:self.minuteHand animated:animated];
+	[self setAngle:secondsAngle forHand:self.secondHand animated:animated];
 }
 
-- (void)didReceiveMemoryWarning {
-	[super didReceiveMemoryWarning];
-	// Dispose of any resources that can be recreated.
+- (void)setAngle:(CGFloat)angle forHand:(UIView *)handView animated:(BOOL)animated {
+	CATransform3D transform = CATransform3DMakeRotation(angle, 0, 0, 1);
+	if (animated) {
+		CABasicAnimation *animation = [CABasicAnimation animation];
+		animation.keyPath = @"transform";
+		animation.toValue = [NSValue valueWithCATransform3D:transform];
+		animation.duration = 0.5;
+		animation.delegate = self;
+		[animation setValue:handView forKey:@"handView"];
+		[handView.layer addAnimation:animation forKey:nil];
+	} else {
+		handView.layer.transform = transform;
+	}
 }
 
+- (void)animationDidStop:(CABasicAnimation *)anim finished:(BOOL)flag {
+	UIView *handView = [anim valueForKey:@"handView"];
+	handView.layer.transform = [anim.toValue CATransform3DValue];
+}
 
 @end
